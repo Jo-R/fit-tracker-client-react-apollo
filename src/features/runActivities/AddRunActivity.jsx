@@ -2,10 +2,34 @@ import React, { useState } from "react";
 import styles from "./AddRunActivity.module.css";
 import typeStyles from "../../sharedStyles/Typography.module.css";
 import { Card } from "../../components/Card/Card";
+import { useMutation, gql } from "@apollo/client";
+import { ADD_RUN_ACTIVITY } from "../../apollo/queries";
 
 export const AddRunActivity = ({ className }) => {
   const [distance, setDistance] = useState("");
   const [title, setTitle] = useState("");
+  const [addRun] = useMutation(ADD_RUN_ACTIVITY, {
+    update(cache, { data: { addRunActivity } }) {
+      cache.modify({
+        fields: {
+          runActivitiesForUser(existingRunActivities = []) {
+            const newActivityRef = cache.writeFragment({
+              data: addRunActivity,
+              fragment: gql`
+                fragment NewActivity on Activity {
+                  distanceMile
+                  title
+                  id
+                  date
+                }
+              `,
+            });
+            return [...existingRunActivities.items, newActivityRef];
+          },
+        },
+      });
+    },
+  });
 
   const handleTitleInput = (evt) => {
     setTitle(evt.target.value);
@@ -17,7 +41,22 @@ export const AddRunActivity = ({ className }) => {
 
   const handleSave = async (evt) => {
     evt.preventDefault();
-    console.log("saved");
+    const date = new Date();
+    addRun({
+      variables: {
+        activity: {
+          userId: "d30e52b0-304c-4aa1-3c68-08d888b124c0",
+          date: date.toISOString(),
+          title,
+          distanceMile: parseInt(distance),
+          duration: "00:00:30",
+          averageHr: 150,
+          maxHr: 190,
+          averagePaceMile: "00:09:00",
+          notes: "",
+        },
+      },
+    });
   };
 
   return (
