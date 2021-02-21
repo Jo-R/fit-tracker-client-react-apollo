@@ -2,34 +2,12 @@ import React, { useState } from "react";
 import styles from "./AddRunActivity.module.css";
 import typeStyles from "../../sharedStyles/Typography.module.css";
 import { Card } from "../../components/Card/Card";
-import { useMutation, gql } from "@apollo/client";
-import { ADD_RUN_ACTIVITY } from "../../apollo/queries";
+import { useAddRun } from "../../apollo/mutations";
 
 export const AddRunActivity = ({ className }) => {
   const [distance, setDistance] = useState("");
   const [title, setTitle] = useState("");
-  const [addRun] = useMutation(ADD_RUN_ACTIVITY, {
-    update(cache, { data: { addRunActivity } }) {
-      cache.modify({
-        fields: {
-          runActivitiesForUser(existingRunActivities = []) {
-            const newActivityRef = cache.writeFragment({
-              data: addRunActivity,
-              fragment: gql`
-                fragment NewActivity on Activity {
-                  distanceMile
-                  title
-                  id
-                  date
-                }
-              `,
-            });
-            return [...existingRunActivities.items, newActivityRef];
-          },
-        },
-      });
-    },
-  });
+  const { addRun } = useAddRun();
 
   const handleTitleInput = (evt) => {
     setTitle(evt.target.value);
@@ -39,9 +17,11 @@ export const AddRunActivity = ({ className }) => {
     setDistance(evt.target.value);
   };
 
-  const handleSave = async (evt) => {
+  const handleSave = (evt) => {
     evt.preventDefault();
     const date = new Date();
+    // TODO add some error handling around this
+    // obvs need to actually do these other fields
     addRun({
       variables: {
         activity: {

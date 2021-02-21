@@ -32,14 +32,3 @@ export const ACTIVITY_DETAIL = gql`
     }
   }
 `;
-
-export const ADD_RUN_ACTIVITY = gql`
-  mutation addRunActivity($activity: RunActivityInput!) {
-    addRunActivity(input: $activity) {
-      distanceMile
-      title
-      id
-      date
-    }
-  }
-`;
