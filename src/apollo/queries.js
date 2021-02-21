@@ -32,3 +32,11 @@ export const ACTIVITY_DETAIL = gql`
     }
   }
 `;
+
+export const USER_LOGIN_STATUS = gql`
+  query GetLoginStatus {
+    isLoggedIn @client {
+      status
+    }
+  }
+`;
