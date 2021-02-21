@@ -1,17 +1,31 @@
 import React from "react";
 import { Card } from "../../components/Card/Card";
-import typeStyles from "../../sharedStyles/Typography.module.css";
 import styles from "./ViewRunActivity.module.css";
 import { BiArrowBack } from "react-icons/bi";
 import placeholderImg from "../../assets/york.jpg";
+import { useQuery } from "@apollo/client";
+import { ACTIVITY_DETAIL } from "../../apollo/queries";
+import typeStyles from "../../sharedStyles/Typography.module.css";
 
 export const ViewRunActivity = ({ match, history }) => {
   const runId = match.params.runId;
-  console.log(runId);
+  const { loading, error, data } = useQuery(ACTIVITY_DETAIL, {
+    variables: { id: parseInt(runId) },
+  });
+
+  if (loading) {
+    return <p>LOADING</p>;
+  }
+
+  if (error) {
+    return <p>ERROR</p>;
+  }
 
   const goBack = () => {
     history.push("/");
   };
+
+  const { runActivity } = data;
 
   return (
     <Card>
@@ -20,7 +34,14 @@ export const ViewRunActivity = ({ match, history }) => {
           <BiArrowBack size={"2em"} color={"var(--main-2"} />
         </span>
       </button>
-      <p>soome activity details</p>
+      {data ? (
+        <>
+          <h2 className={typeStyles.cardHeading}>{runActivity.title}</h2>
+          <p>{`distance ${runActivity.distanceMile}`}</p>
+        </>
+      ) : (
+        <p>No such activity</p>
+      )}
       <div className={styles.grid}>
         <div>
           <p>some other details</p>
