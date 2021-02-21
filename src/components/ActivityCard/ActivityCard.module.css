@@ -1,0 +1,12 @@
+.content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.link {
+  text-decoration: none;
+  background-color: var(--main-3);
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+}
