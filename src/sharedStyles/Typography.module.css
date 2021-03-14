@@ -1,26 +1,29 @@
 .bannerTitle {
   font-weight: 700;
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   color: var(--main-2);
 }
 
 .cardHeading {
   color: var(--main-2);
-  font-size: 1.25rem;
+  font-size: 2rem;
   font-weight: 700;
+  margin-bottom: 1rem;
 }
 
 .sectionHeading {
   color: var(--main-2);
   font-weight: 700;
-  font-size: 1.5rem;
-  margin-top: 0;
+  font-size: 2rem;
+  margin-bottom: 1rem;
 }
 
 .greyText {
   color: var(--grey-700);
+  font-size: 1rem;
 }
 
 .blackText {
   color: rgb(39, 38, 38);
+  font-size: 1rem;
 }

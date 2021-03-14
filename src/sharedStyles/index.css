@@ -24,11 +24,21 @@
   --white: #f2f3f4;
 }
 
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 62.5%;
+}
+
 body {
   background-color: var(---white);
   font-family: Arial, Helvetica, sans-serif;
-  margin: 0;
-  padding: 0;
 }
 
 @media (max-width: 768px) {
